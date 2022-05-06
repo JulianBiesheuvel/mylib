@@ -17,4 +17,15 @@ jobs:
           server-id: github # Value of distributionManagement/repository/id
           settings-path: $ {{ github.workspace }}
 
-      - run: cat ${{ github.workspace }}/settings.xml
+      - name: Parse version info from tag
+        run: |
+          VERSION=${GITHUB_REF:11}
+          echo "verison=$VERSION" >> $GIHUB_ENV
+
+      - run: |
+          mvn -B -ntp versions:set -DnewVersions=${{ env.version }}
+          echo ${{ env.version }} > ser/main/resources/version.txt
+
+      - run: mvn -B -ntp clean deploy -s ${{ github.workspace }}/settings.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GHTOKEN }}
