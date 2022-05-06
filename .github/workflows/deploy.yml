@@ -17,4 +17,4 @@ jobs:
           server-id: github # Value of distributionManagement/repository/id
           settings-path: $ {{ github.workspace }}
 
-      - run: cat $ {{ github.workspace }}/settings.xml
+      - run: cat ${{ github.workspace }}/settings.xml
