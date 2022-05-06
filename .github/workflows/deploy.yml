@@ -15,17 +15,17 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           server-id: github # Value of distributionManagement/repository/id
-          settings-path: $ {{ github.workspace }}
+          settings-path: ${{ github.workspace }} # location of settings.xml
 
       - name: Parse version info from tag
         run: |
+          # GITHUB_REF is like refs/tags/v2.3.5, so strip the first 11 chars
           VERSION=${GITHUB_REF:11}
-          echo "verison=$VERSION" >> $GITHUB_ENV
-
+          echo "version=$VERSION" >> $GITHUB_ENV
       - run: |
-          mvn -B -ntp versions:set -DnewVersions=${{ env.version }}
-          echo ${{ env.version }} > ser/main/resources/version.txt
-
+          mvn -B -ntp versions:set -DnewVersion=${{ env.version }}
+          echo ${{ env.version }} > src/main/resources/version.txt
       - run: mvn -B -ntp clean deploy -s ${{ github.workspace }}/settings.xml
         env:
-          GITHUB_TOKEN: ${{ secrets.GHTOKEN }}
+          # auth necessary to access GitHub Maven registries
+          GITHUB_TOKEN: ${{ github.token }}
