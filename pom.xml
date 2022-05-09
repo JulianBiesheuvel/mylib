@@ -6,7 +6,7 @@
 
     <groupId>remla22</groupId>
     <artifactId>mylib</artifactId>
-    <version>v1.0.8</version>
+    <version>v2.0.0</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
