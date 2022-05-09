@@ -22,10 +22,12 @@ jobs:
           # GITHUB_REF is like refs/tags/v2.3.5, so strip the first 11 chars
           VERSION=${GITHUB_REF:11}
           echo "version=$VERSION" >> $GITHUB_ENV
+
       - run: |
           mvn -B -ntp versions:set -DnewVersion=${{ env.version }}
           echo ${{ env.version }} > src/main/resources/version.txt
-      - run: mvn -B -ntp clean deploy -s ${{ github.workspace }}/settings.xml
+
+      - run: mvn -X -B -ntp clean deploy -s ${{ github.workspace }}/settings.xml
         env:
           # auth necessary to access GitHub Maven registries
           GITHUB_TOKEN: ${{ github.token }}
